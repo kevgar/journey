@@ -1,0 +1,19 @@
+# ssh into the master node of EMR cluster from the cloud9 terminal
+aws emr ssh --cluster-id j-1CZ51HG5J04RV --key-pair-file ~/ec2-journey.pem
+
+# copy data from s3 over to the master node
+aws s3 cp s3://kjgardner74-hive/journey/408408-782411-bundle-archive.zip 408408-782411-bundle-archive.zip
+
+# create a directory for the data
+mkdir -p journey
+
+# unzip the data
+unzip 408408-782411-bundle-archive.zip
+
+# rename the unzipped directory
+mv 408408-782411-bundle-archive journey
+
+# clean up the home directory
+rm -rf 408408-782411-bundle-archive.zip
+rm -rf __MACOSX/
+						
