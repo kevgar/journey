@@ -16,4 +16,37 @@ mv 408408-782411-bundle-archive journey
 # clean up the home directory
 rm -rf 408408-782411-bundle-archive.zip
 rm -rf __MACOSX/
-						
+
+# copy scripts from s3 to the master node
+aws s3 cp s3://kjgardner74-hive/journey/scripts/03_create_hive_tables.hql 03_create_hive_tables.hql
+aws s3 cp s3://kjgardner74-hive/journey/scripts/04_create_external_tables.hql 04_create_external_tables.hql
+
+# Create a directory and copy data into hdfs
+hdfs dfs -mkdir journey
+
+hdfs dfs -mkdir journey/transaction
+hdfs dfs -copyFromLocal journey/transaction_data.csv journey/transaction
+
+hdfs dfs -mkdir journey/product
+hdfs dfs -copyFromLocal journey/product.csv journey/product
+
+hdfs dfs -mkdir journey/hh_demographic
+hdfs dfs -copyFromLocal journey/hh_demographic.csv journey/hh_demographic
+
+hdfs dfs -mkdir journey/causal
+hdfs dfs -copyFromLocal journey/causal_data.csv journey/causal
+
+hdfs dfs -mkdir journey/coupon
+hdfs dfs -copyFromLocal journey/coupon.csv journey/coupon
+
+hdfs dfs -mkdir journey/coupon_redempt
+hdfs dfs -copyFromLocal journey/coupon_redempt.csv journey/coupon_redempt
+
+hdfs dfs -mkdir journey/campaign
+hdfs dfs -copyFromLocal journey/campaign_table.csv journey/campaign
+
+hdfs dfs -mkdir journey/campaign_desc
+hdfs dfs -copyFromLocal journey/campaign_desc.csv journey/campaign_desc
+
+# next try to create tables in hive
+#hive -hiveconf DATA_DIR=/home/journey/ -f create_hive_tables.hql
